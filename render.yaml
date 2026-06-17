@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: disha-internship-recommender
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd backend && python app.py
+    plan: free
+    envVars:
+      - key: PORT
+        value: 5000
