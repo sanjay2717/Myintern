@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MyIntern — AI Internship Recommendation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+
+    /* ── VARIABLES ──────────────────────────── */
+    :root {
+      --blue:        #2563EB;
+      --blue-dark:   #1E40AF;
+      --blue-light:  #DBEAFE;
+      --purple:      #7C3AED;
+      --green:       #059669;
+      --text:        #0F172A;
+      --text-mid:    #475569;
+      --text-light:  #94A3B8;
+      --bg:          #F8FAFC;
+      --white:       #FFFFFF;
+      --border:      #E2E8F0;
+    }
+
+    /* ── RESET ──────────────────────────────── */
+    *, *::before, *::after {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ─────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 40px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(226,232,240,0.8);
+      transition: all 0.3s ease;
+    }
+
+    nav.scrolled {
+      background: rgba(255,255,255,0.97);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    }
+
+    .nav-brand {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-mid);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--blue);
+    }
+
+    .nav-cta {
+      background: var(--blue);
+      color: var(--white) !important;
+      padding: 9px 22px;
+      border-radius: 8px;
+      font-weight: 600 !important;
+      transition: all 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--blue-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+      color: var(--white) !important;
+    }
+
+    /* ── HERO SECTION ───────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    /* Animated gradient orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: floatOrb 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .orb-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(37,99,235,0.12), transparent);
+      top: -100px; left: -150px;
+      animation-delay: 0s;
+    }
+
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(124,58,237,0.10), transparent);
+      top: 50px; right: -100px;
+      animation-delay: 2s;
+    }
+
+    .orb-3 {
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(5,150,105,0.08), transparent);
+      bottom: 50px; left: 30%;
+      animation-delay: 4s;
+    }
+
+    @keyframes floatOrb {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%       { transform: translate(30px, -20px) scale(1.05); }
+      66%       { transform: translate(-20px, 15px) scale(0.97); }
+    }
+
+    /* Grid dots background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(37,99,235,0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue-light);
+      color: var(--blue);
+      padding: 7px 18px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      margin-bottom: 28px;
+      border: 1px solid rgba(37,99,235,0.2);
+      opacity: 0;
+      animation: fadeDown 0.6s ease 0.2s forwards;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--blue);
+      border-radius: 50%;
+      animation: pulseDot 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2.6rem, 6vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.4s forwards;
+    }
+
+    .hero-title .line-1 {
+      display: block;
+      color: var(--text);
+    }
+
+    .hero-title .line-2 {
+      display: block;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      color: var(--text-mid);
+      max-width: 560px;
+      line-height: 1.7;
+      margin: 0 auto 40px;
+      font-weight: 400;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.6s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 64px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.8s forwards;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      color: var(--white);
+      padding: 15px 34px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(37,99,235,0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(37,99,235,0.45);
+    }
+
+    .btn-primary:hover::after {
+      opacity: 1;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      padding: 15px 34px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 2px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+      transform: translateY(-2px);
+    }
+
+    /* Hero stats bar */
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 1s forwards;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-number span {
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-desc {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-divider {
+      width: 1px;
+      background: var(--border);
+      align-self: stretch;
+    }
+
+    /* ── HOW IT WORKS ───────────────────────── */
+    .section {
+      padding: 100px 24px;
+    }
+
+    .section-alt {
+      background: var(--bg);
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-tag {
+      display: inline-block;
+      background: var(--blue-light);
+      color: var(--blue);
+      padding: 5px 16px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--text-mid);
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    /* Steps */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 32px;
+      margin-top: 56px;
+    }
+
+    .step-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 28px;
+      position: relative;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .step-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .step-card:hover {
+      border-color: rgba(37,99,235,0.3);
+      box-shadow: 0 8px 32px rgba(37,99,235,0.08);
+      transform: translateY(-4px);
+    }
+
+    .step-number {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .step-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+    }
+
+    .icon-blue   { background: #EFF6FF; }
+    .icon-purple { background: #F5F3FF; }
+    .icon-green  { background: #ECFDF5; }
+    .icon-orange { background: #FFF7ED; }
+
+    .step-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .step-desc {
+      font-size: 0.88rem;
+      color: var(--text-mid);
+      line-height: 1.65;
+    }
+
+    .step-connector {
+      position: absolute;
+      top: 52px;
+      right: -16px;
+      width: 32px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--border), transparent);
+      display: none;
+    }
+
+    /* ── FEATURES SECTION ───────────────────── */
+    .features-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      margin-top: 0;
+    }
+
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: all 0.5s ease;
+    }
+
+    .feature-item.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--blue-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .feature-text h4 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .feature-text p {
+      font-size: 0.84rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+
+    /* Preview card mockup */
+    .preview-mockup {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.10);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateX(30px) scale(0.97);
+      transition: all 0.6s ease;
+    }
+
+    .preview-mockup.visible {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
+    .mockup-bar {
+      background: var(--bg);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dot-red    { width:12px; height:12px; border-radius:50%; background:#FF5F57; }
+    .dot-yellow { width:12px; height:12px; border-radius:50%; background:#FFBD2E; }
+    .dot-green  { width:12px; height:12px; border-radius:50%; background:#28CA41; }
+
+    .mockup-url {
+      flex: 1;
+      background: var(--white);
+      border-radius: 6px;
+      padding: 5px 14px;
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-left: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .mockup-body {
+      padding: 24px 20px;
+    }
+
+    .mockup-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s ease;
+      animation: shimmerCard 3s ease infinite;
+    }
+
+    .mockup-card:nth-child(2) { animation-delay: 0.3s; }
+    .mockup-card:nth-child(3) { animation-delay: 0.6s; }
+
+    @keyframes shimmerCard {
+      0%, 100% { border-color: var(--border); }
+      50%       { border-color: rgba(37,99,235,0.3); box-shadow: 0 0 0 3px rgba(37,99,235,0.05); }
+    }
+
+    .mockup-score {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .score-high   { background: #ECFDF5; color: #059669; border: 2px solid #059669; }
+    .score-medium { background: #FFFBEB; color: #D97706; border: 2px solid #D97706; }
+
+    .mockup-info {
+      flex: 1;
+    }
+
+    .mockup-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .mockup-sub {
+      font-size: 0.73rem;
+      color: var(--text-light);
+    }
+
+    .mockup-tag {
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 50px;
+      background: #EDE9FE;
+      color: #6D28D9;
+    }
+
+    /* ── IMPACT STATS ───────────────────────── */
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      margin-top: 56px;
+    }
+
+    .impact-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .impact-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .impact-card:hover {
+      border-color: var(--blue);
+      box-shadow: 0 8px 24px rgba(37,99,235,0.08);
+      transform: translateY(-4px);
+    }
+
+    .impact-number {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+      line-height: 1;
+    }
+
+    .impact-label {
+      font-size: 0.88rem;
+      color: var(--text-mid);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    /* ── CTA SECTION ────────────────────────── */
+    .cta-section {
+      background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #7C3AED 100%);
+      padding: 100px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    .cta-section h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .cta-section p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.75);
+      max-width: 480px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+      position: relative;
+    }
+
+    .btn-white {
+      background: var(--white);
+      color: var(--blue);
+      padding: 15px 38px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .btn-white:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+
+    /* ── FOOTER ─────────────────────────────── */
+    footer {
+      background: var(--text);
+      color: rgba(255,255,255,0.5);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--white);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 0.82rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--white);
+    }
+
+    .footer-copy {
+      font-size: 0.78rem;
+    }
+
+    /* ── ANIMATIONS ─────────────────────────── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ─────────────────────────── */
+    @media (max-width: 900px) {
+      .features-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .preview-mockup {
+        transform: none;
+      }
+
+      nav { padding: 0 20px; }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero-stats { gap: 24px; }
+      .stat-divider { display: none; }
+      .hero { padding: 100px 16px 60px; }
+      .section { padding: 70px 16px; }
+      footer { padding: 24px 20px; }
+      .steps-grid { gap: 20px; }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ NAVBAR ════════════════════════════════ -->
+  <nav id="navbar">
+    <div class="nav-brand">MyIntern</div>
+    <ul class="nav-links">
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#impact">Impact</a></li>
+      <li><a href="/app" class="nav-cta">Find Internships</a></li>
+    </ul>
+  </nav>
+
+  <!-- ══ HERO ══════════════════════════════════ -->
+  <section class="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      SIH 25034 — Ministry of Corporate Affairs
+    </div>
+
+    <h1 class="hero-title">
+      <span class="line-1">The Smarter Way to</span>
+      <span class="line-2">Find Your Internship</span>
+    </h1>
+
+    <p class="hero-sub">
+      MyIntern uses AI-powered matching to connect every
+      candidate — regardless of background or digital literacy —
+      with the right PM Internship opportunity in seconds.
+    </p>
+
+    <div class="hero-actions">
+      <a href="/app" class="btn-primary">Find My Internship</a>
+      <a href="#how-it-works" class="btn-outline">See How It Works</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number"><span>40</span>+</div>
+        <div class="stat-desc">Internships Listed</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-number"><span>15</span>+</div>
+        <div class="stat-desc">States Covered</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-number"><span>30</span>s</div>
+        <div class="stat-desc">To Find a Match</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-number"><span>0</span></div>
+        <div class="stat-desc">Cost to Candidate</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ HOW IT WORKS ══════════════════════════ -->
+  <section class="section section-alt" id="how-it-works">
+    <div class="section-inner">
+      <div class="section-tag">Process</div>
+      <h2 class="section-title">Simple. Fast. Accurate.</h2>
+      <p class="section-sub">
+        Four inputs. Five results. Zero confusion.
+        Designed specifically for first-generation learners
+        and candidates from rural and remote backgrounds.
+      </p>
+
+      <div class="steps-grid">
+
+        <div class="step-card" data-animate>
+          <div class="step-number">Step 01</div>
+          <div class="step-icon-box icon-blue">📋</div>
+          <h3 class="step-title">Enter Your Profile</h3>
+          <p class="step-desc">
+            Select your education level, sector of interest,
+            preferred state, and any skills you have.
+            No resume required. No account needed.
+          </p>
+        </div>
+
+        <div class="step-card" data-animate>
+          <div class="step-number">Step 02</div>
+          <div class="step-icon-box icon-purple">🤖</div>
+          <h3 class="step-title">AI Matches Your Profile</h3>
+          <p class="step-desc">
+            Our TF-IDF recommendation engine analyses your
+            inputs against 40 plus internship listings and
+            computes a personalised match score for each.
+          </p>
+        </div>
+
+        <div class="step-card" data-animate>
+          <div class="step-number">Step 03</div>
+          <div class="step-icon-box icon-green">📊</div>
+          <h3 class="step-title">Review Your Matches</h3>
+          <p class="step-desc">
+            Receive 3 to 5 ranked internship cards showing
+            the role, company, location, stipend, and
+            your personal match percentage.
+          </p>
+        </div>
+
+        <div class="step-card" data-animate>
+          <div class="step-number">Step 04</div>
+          <div class="step-icon-box icon-orange">🚀</div>
+          <h3 class="step-title">Apply With Confidence</h3>
+          <p class="step-desc">
+            Choose the internship that fits best and apply
+            directly on the PM Internship portal with
+            informed, data-backed confidence.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FEATURES ═══════════════════════════════ -->
+  <section class="section" id="features">
+    <div class="section-inner">
+      <div class="features-layout">
+
+        <!-- Left: Text -->
+        <div>
+          <div class="section-tag">Features</div>
+          <h2 class="section-title">Built for Every Candidate</h2>
+          <p class="section-sub" style="margin-bottom: 40px;">
+            Whether you are a Class 10 pass candidate from rural Bihar
+            or a graduate from a metro city, MyIntern works equally
+            well for you.
+          </p>
+
+          <div class="features-list">
+
+            <div class="feature-item" data-animate-left>
+              <div class="feature-icon">🎯</div>
+              <div class="feature-text">
+                <h4>Hyper-Personalised Matching</h4>
+                <p>Each recommendation is scored using your exact
+                   education, skills, sector, and location — not a
+                   generic filter.</p>
+              </div>
+            </div>
+
+            <div class="feature-item" data-animate-left>
+              <div class="feature-icon">📱</div>
+              <div class="feature-text">
+                <h4>Mobile-First Design</h4>
+                <p>Fully responsive interface designed for
+                   low-end smartphones and slow network
+                   connections.</p>
+              </div>
+            </div>
+
+            <div class="feature-item" data-animate-left>
+              <div class="feature-icon">⚡</div>
+              <div class="feature-text">
+                <h4>Instant Results Under 2 Seconds</h4>
+                <p>Lightweight TF-IDF engine delivers ranked
+                   recommendations in milliseconds with no
+                   heavy infrastructure needed.</p>
+              </div>
+            </div>
+
+            <div class="feature-item" data-animate-left>
+              <div class="feature-icon">🔍</div>
+              <div class="feature-text">
+                <h4>Transparent Match Scoring</h4>
+                <p>Every result card shows a clear match percentage
+                   so candidates understand why each internship
+                   was recommended to them.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right: Mockup -->
+        <div>
+          <div class="preview-mockup" data-animate-right>
+            <div class="mockup-bar">
+              <span class="dot-red"></span>
+              <span class="dot-yellow"></span>
+              <span class="dot-green"></span>
+              <span class="mockup-url">myintern.app / results</span>
+            </div>
+            <div class="mockup-body">
+
+              <div style="font-size:0.75rem;font-weight:700;color:#94A3B8;
+                          text-transform:uppercase;letter-spacing:0.5px;
+                          margin-bottom:14px;">
+                Your Top Matches
+              </div>
+
+              <div class="mockup-card">
+                <div class="mockup-score score-high">94%</div>
+                <div class="mockup-info">
+                  <div class="mockup-title">Java Backend Developer Intern</div>
+                  <div class="mockup-sub">Tata Consultancy Services · Tamil Nadu</div>
+                </div>
+                <span class="mockup-tag">IT</span>
+              </div>
+
+              <div class="mockup-card">
+                <div class="mockup-score score-high">87%</div>
+                <div class="mockup-info">
+                  <div class="mockup-title">Python Developer Intern</div>
+                  <div class="mockup-sub">National Informatics Centre · Delhi</div>
+                </div>
+                <span class="mockup-tag">IT</span>
+              </div>
+
+              <div class="mockup-card">
+                <div class="mockup-score score-medium">76%</div>
+                <div class="mockup-info">
+                  <div class="mockup-title">Software Testing Intern</div>
+                  <div class="mockup-sub">NASSCOM Foundation · Telangana</div>
+                </div>
+                <span class="mockup-tag">IT</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ IMPACT ═════════════════════════════════ -->
+  <section class="section section-alt" id="impact">
+    <div class="section-inner">
+      <div class="section-tag">Impact</div>
+      <h2 class="section-title">Designed for Bharat</h2>
+      <p class="section-sub">
+        MyIntern was built specifically to serve first-generation
+        learners, rural youth, and candidates from underserved
+        districts who deserve equal access to opportunity.
+      </p>
+
+      <div class="impact-grid">
+
+        <div class="impact-card" data-animate>
+          <div class="impact-number">30s</div>
+          <div class="impact-label">Average time to find a relevant internship match</div>
+        </div>
+
+        <div class="impact-card" data-animate>
+          <div class="impact-number">4</div>
+          <div class="impact-label">Simple inputs required — no resume, no login</div>
+        </div>
+
+        <div class="impact-card" data-animate>
+          <div class="impact-number">80%+</div>
+          <div class="impact-label">Recommendation relevance accuracy on matched results</div>
+        </div>
+
+        <div class="impact-card" data-animate>
+          <div class="impact-number">0</div>
+          <div class="impact-label">Cost to the candidate — completely free to use</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CTA ════════════════════════════════════ -->
+  <section class="cta-section">
+    <h2>Find Your Internship Today</h2>
+    <p>
+      Join thousands of candidates across India who are
+      discovering the right opportunity through
+      AI-powered personalised matching.
+    </p>
+    <a href="/app" class="btn-white">Get Started — It is Free</a>
+  </section>
+
+  <!-- ══ FOOTER ════════════════════════════════ -->
+  <footer>
+    <div class="footer-brand">MyIntern</div>
+    <div class="footer-links">
+      <a href="https://github.com/sanjay2717/AIinternship" target="_blank">GitHub</a>
+      <a href="/app">Application</a>
+      <a href="#how-it-works">How It Works</a>
+    </div>
+    <div class="footer-copy">
+      SIH 25034 · VSB Engineering College · Suman · 922524106215
+    </div>
+  </footer>
+
+  <script>
+    // ── NAVBAR SCROLL ──────────────────────────
+    const navbar = document.getElementById("navbar");
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 40) {
+        navbar.classList.add("scrolled");
+      } else {
+        navbar.classList.remove("scrolled");
+      }
+    });
+
+    // ── INTERSECTION OBSERVER ──────────────────
+    const observerOptions = {
+      threshold: 0.15,
+      rootMargin: "0px 0px -40px 0px"
+    };
+
+    // Fade up cards
+    const upObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry, i) {
+        if (entry.isIntersecting) {
+          setTimeout(function () {
+            entry.target.classList.add("visible");
+          }, i * 120);
+          upObserver.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll("[data-animate]").forEach(function (el) {
+      upObserver.observe(el);
+    });
+
+    // Fade left features
+    const leftObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry, i) {
+        if (entry.isIntersecting) {
+          setTimeout(function () {
+            entry.target.classList.add("visible");
+          }, i * 150);
+          leftObserver.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll("[data-animate-left]").forEach(function (el) {
+      leftObserver.observe(el);
+    });
+
+    // Fade right mockup
+    const rightObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          rightObserver.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll("[data-animate-right]").forEach(function (el) {
+      rightObserver.observe(el);
+    });
+
+    // ── SMOOTH ANCHOR SCROLL ───────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+      anchor.addEventListener("click", function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute("href"));
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

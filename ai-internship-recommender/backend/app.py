@@ -16,14 +16,20 @@ app = Flask(
 
 CORS(app)
 
+# Landing page
 @app.route("/")
+def landing():
+    return render_template("landing.html")
+
+# App page
+@app.route("/app")
 def home():
     return render_template("index.html")
 
+# Recommend API
 @app.route("/recommend", methods=["POST"])
 def recommend():
-    data = request.get_json()
-
+    data      = request.get_json()
     education = data.get("education", "")
     skills    = data.get("skills", "")
     sector    = data.get("sector", "")
