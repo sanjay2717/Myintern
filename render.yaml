@@ -1,10 +1,15 @@
 services:
   - type: web
-    name: disha-internship-recommender
+    name: myintern-recommender
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: cd backend && python app.py
+    region: singapore
     plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python backend/app.py
+    healthCheckPath: /
     envVars:
       - key: PORT
         value: 5000
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    autoDeploy: true
