@@ -1,17 +1,13 @@
-# render.yaml — update rootDir
 services:
   - type: web
     name: myintern-recommender
     env: python
     region: singapore
     plan: free
-    rootDir: ai-internship-recommender
     buildCommand: pip install -r requirements.txt
-    startCommand: python backend/app.py
+    startCommand: gunicorn --chdir backend app:app --bind 0.0.0.0:$PORT
     healthCheckPath: /
     envVars:
-      - key: PORT
-        value: 5000
       - key: PYTHON_VERSION
         value: 3.11.0
     autoDeploy: true
